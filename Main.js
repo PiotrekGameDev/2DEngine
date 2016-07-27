@@ -10,6 +10,7 @@ var player, enemy, box;
 var loadlevel = function(){
   GameObject.array=[];
   player = new GameObject(32,32);
+  player.addComponent(Rigidbody);
   player.addComponent(Player);
   player.addComponent(Collider);
   player.addComponent(SpriteRenderer).sprite=playerSprite;
@@ -29,20 +30,25 @@ loadlevel();
 // Update game objects
 var update = function(modifier) {
   if(Collider.checkCollision(player.getComponent(Collider), enemy.getComponent(Collider))) {
-    loadlevel();
-    //console.log(0);
+    //loadlevel();
   }
   GameObject.array.forEach(function (go){
-    go.update(modifier);
+    if(go.active)go.update(modifier);
   });
 };
-
+var camera={
+  position:Vector2.zero
+};
 // Draw everything
 var render = function() {
+  camera.position=new Vector2(-player.position.x+32, -player.position.y+32);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(camera.position.x, camera.position.y);
   GameObject.array.forEach(function (go){
-    go.render(ctx);
+    if(go.active)go.render(ctx);
   });
+  ctx.restore();
 };
 
 // The main game loop

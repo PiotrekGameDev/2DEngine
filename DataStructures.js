@@ -11,9 +11,12 @@ var Vector2= function(x, y){
     this.x+=vector.x
     this.y+=vector.y;
   }
-  this.normalized=function(){
+  this.length=function(){
     var a = this.x * this.x + this.y * this.y;
-    var length = Math.sqrt(a);
+    return Math.sqrt(a);
+  }
+    this.normalized=function(){
+    var length = this.length();
     var nVector=Vector2.zero;
     if (length > 0) {
       nVector.x =this.x / length;
@@ -22,8 +25,7 @@ var Vector2= function(x, y){
     return nVector;
   }
   this.normalize=function(){
-    var a = this.x * this.x + this.y * this.y;
-    var length = Math.sqrt(a);
+    var length = this.length();
     if (length > 0) {
       this.x =this.x / length;
       this.y =this.y / length;
